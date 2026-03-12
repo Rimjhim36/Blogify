@@ -12,6 +12,21 @@ ENV/
 # Environment variables
 .env
 
+# Django
+*.log# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables
+.env
+
 # Django logs
 *.log
 local_settings.py
@@ -42,6 +57,42 @@ htmlcov/
 .pytest_cache/
 
 # Node modules (if frontend used)
+node_modules/
+
+# Build files
+dist/
+build/
+
+# Temporary files
+*.swp
+*.swo
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Django stuff
+media/
+
+# Static files (optional)
+staticfiles/
+
+# Migrations cache
+**/migrations/*.pyc
+
+# IDE / Editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage / testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Node modules (agar frontend use ho raha ho)
 node_modules/
 
 # Build files

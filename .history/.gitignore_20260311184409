@@ -12,17 +12,16 @@ ENV/
 # Environment variables
 .env
 
-# Django logs
+# Django
 *.log
 local_settings.py
-
-# SQLite journal file (ignore but keep db)
+db.sqlite3
 db.sqlite3-journal
 
-# Media files (uploaded files)
+# Django stuff
 media/
 
-# Static files generated during collectstatic
+# Static files (optional)
 staticfiles/
 
 # Migrations cache
@@ -41,7 +40,7 @@ Thumbs.db
 htmlcov/
 .pytest_cache/
 
-# Node modules (if frontend used)
+# Node modules (agar frontend use ho raha ho)
 node_modules/
 
 # Build files
