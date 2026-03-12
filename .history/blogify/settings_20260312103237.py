@@ -24,6 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#a0j&0-_@n9j%^-^(z8a_lmm4!71y#k#81h=&=os@n5#6+gdvv'
 
 import os
+from django.contrib.auth import get_user_model
+
+if os.environ.get("CREATE_SUPERUSER") == "1":
+    User = get_user_model()
+    username = os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin")
+    email = os.environ.get("DJANGO_SUPERUSER_EMAIL", "admin@gmail.com")
+    password = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "admin123")
+
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username, email, password)
 
 DJANGO_SUPERUSER_USERNAME = os.environ.get("DJANGO_SUPERUSER_USERNAME")
 DJANGO_SUPERUSER_EMAIL = os.environ.get("DJANGO_SUPERUSER_EMAIL")
@@ -43,7 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mainapp.apps.MainappConfig',
+    'mainapp',
     'sweetify',
     'cloudinary',
     'cloudinary_storage',

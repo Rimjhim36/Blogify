@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure-#a0j&0-_@n9j%^-^(z8a_lmm4!71y#k#81h=&=os@n5#6+gdvv
 
 import os
 
+
 DJANGO_SUPERUSER_USERNAME = os.environ.get("DJANGO_SUPERUSER_USERNAME")
 DJANGO_SUPERUSER_EMAIL = os.environ.get("DJANGO_SUPERUSER_EMAIL")
 DJANGO_SUPERUSER_PASSWORD = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mainapp.apps.MainappConfig',
+    'mainapp',
     'sweetify',
     'cloudinary',
     'cloudinary_storage',
