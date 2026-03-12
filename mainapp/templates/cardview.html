@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Card view
+{% endblock %}
+
+{% block data %}
+
+<style>
+  /* ── Blog Detail Page ── */
+  .blog-detail-wrapper {
+    max-width: 780px;
+    margin: 3.5rem auto 5rem;
+    padding: 0 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── Hero Image ── */
+  .blog-detail-img-wrap {
+    width: 100%;
+    height: 420px;
+    border-radius: 1.4rem;
+    overflow: hidden;
+    margin-bottom: 2.2rem;
+    box-shadow: 0 20px 60px rgba(99,102,241,.15);
+    animation: bdFadeUp .7s ease both;
+  }
+  .blog-detail-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .6s cubic-bezier(.22,1,.36,1), filter .4s ease;
+    filter: saturate(.9);
+  }
+  .blog-detail-img-wrap:hover img {
+    transform: scale(1.04);
+    filter: saturate(1.1);
+  }
+
+  /* ── Title ── */
+  .blog-detail-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    font-weight: 800;
+    color: #1a1033;
+    line-height: 1.22;
+    margin-bottom: .75rem;
+    animation: bdFadeUp .7s ease .1s both;
+  }
+
+  /* ── Subtitle ── */
+  .blog-detail-subtitle {
+    font-size: 1.12rem;
+    color: #64748b;
+    font-weight: 400;
+    line-height: 1.7;
+    margin-bottom: 1.4rem;
+    border-left: 3px solid transparent;
+    border-image: linear-gradient(135deg,#6366f1,#ec4899) 1;
+    padding-left: 1rem;
+    animation: bdFadeUp .7s ease .2s both;
+  }
+
+  /* ── Author / Meta row ── */
+  .blog-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .9rem 1.2rem;
+    background: #faf9ff;
+    border-radius: .9rem;
+    border: 1.5px solid rgba(99,102,241,.10);
+    margin-bottom: 2.4rem;
+    font-size: .88rem;
+    font-weight: 500;
+    color: #64748b;
+    animation: bdFadeUp .7s ease .3s both;
+  }
+  .meta-avatar {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg,#6366f1,#ec4899);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: .82rem;
+  }
+  .meta-author {
+    font-weight: 700;
+    background: linear-gradient(135deg,#6366f1,#ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: .92rem;
+  }
+  .meta-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: #cbd5e1; flex-shrink: 0;
+  }
+  .meta-date { color: #94a3b8; font-size: .83rem; }
+
+  /* ── Divider ── */
+  .blog-detail-divider {
+    height: 2px;
+    background: linear-gradient(90deg,#6366f1,#ec4899,transparent);
+    border: none;
+    border-radius: 50rem;
+    margin-bottom: 2.2rem;
+    animation: bdFadeUp .7s ease .35s both;
+  }
+
+  /* ── Content ── */
+  .blog-detail-content {
+    font-size: 1.05rem;
+    color: #374151;
+    line-height: 1.95;
+    letter-spacing: .01em;
+    animation: bdFadeUp .7s ease .4s both;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes bdFadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ── */
+  @media(max-width: 575.98px) {
+    .blog-detail-img-wrap { height: 240px; }
+    .blog-detail-title    { font-size: 1.6rem; }
+  }
+</style>
+
+
+<div class="blog-detail-wrapper card p-3">
+
+  <!-- Image -->
+  <div class="blog-detail-img-wrap">
+    {% if data.image %}
+      <img src="{{ data.image.url }}">
+    {% else %}
+      <img src="{% static 'images/noimage.jpg' %}">
+    {% endif %}
+  </div>
+
+  <!-- Title -->
+  <h1 class="blog-detail-title">{{ data.title }}</h1>
+
+  <!-- Subtitle -->
+  <p class="blog-detail-subtitle">{{ data.subtitle }}</p>
+
+  <!-- Author + Date -->
+  <div class="blog-detail-meta">
+    <div class="meta-avatar">{{ data.author|slice:":1"|upper }}</div>
+    <span class="meta-author">{{ data.author }}</span>
+    <div class="meta-dot"></div>
+    <span class="meta-date">{{ data.published_at }}</span>
+  </div>
+
+  <hr class="blog-detail-divider">
+
+  <!-- Content -->
+  <div class="blog-detail-content">{{ data.content }}</div>
+
+</div>
+
+
+
+{% endblock %}

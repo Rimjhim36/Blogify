@@ -1,0 +1,684 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+home
+{% endblock %}
+
+
+{% block data %}
+
+<style>
+    :root {
+        --grad-start: #6366f1;
+        --grad-end: #ec4899;
+        --grad: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+        --bg-soft: #faf9ff;
+        --text-dark: #1a1033;
+        --text-muted: #64748b;
+        --radius-xl: 1.5rem;
+        --shadow-md: 0 12px 40px rgba(99, 102, 241, .18);
+    }
+
+    /* ── Hero Wrapper ── */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+        padding: 7rem 0 5rem;
+        background: var(--bg-soft);
+    }
+
+    /* Blobs */
+    .hero-section::before,
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: .18;
+        pointer-events: none;
+    }
+
+    .hero-section::before {
+        width: 520px;
+        height: 520px;
+        background: var(--grad-start);
+        top: -160px;
+        left: -120px;
+    }
+
+    .hero-section::after {
+        width: 420px;
+        height: 420px;
+        background: var(--grad-end);
+        bottom: -140px;
+        right: -80px;
+    }
+
+    /* Dot grid */
+    .dot-grid {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle, #c4b5fd 1px, transparent 1px);
+        background-size: 28px 28px;
+        opacity: .22;
+        pointer-events: none;
+    }
+
+    /* ── Left Column ── */
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, .10), rgba(236, 72, 153, .10));
+        border: 1px solid rgba(99, 102, 241, .22);
+        border-radius: 50rem;
+        padding: .35rem 1rem;
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--grad-start);
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        margin-bottom: 1.4rem;
+        animation: fadeUp .6s ease both;
+    }
+
+    .hero-badge .dot-live {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--grad);
+        animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    .hero-heading {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.4rem, 5vw, 3.6rem);
+        font-weight: 800;
+        line-height: 1.15;
+        color: var(--text-dark);
+        margin-bottom: 1.3rem;
+        animation: fadeUp .7s ease .1s both;
+    }
+
+    .hero-heading .grad-text {
+        background: var(--grad);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtext {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 1.08rem;
+        color: var(--text-muted);
+        line-height: 1.75;
+        max-width: 490px;
+        margin-bottom: 2.2rem;
+        animation: fadeUp .7s ease .2s both;
+    }
+
+    .hero-ctas {
+        animation: fadeUp .7s ease .3s both;
+    }
+
+    .btn-grad-hero {
+        background: var(--grad);
+        color: #fff;
+        border: none;
+        border-radius: 50rem;
+        padding: .78rem 1.9rem;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .97rem;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        transition: transform .25s, box-shadow .25s;
+        box-shadow: 0 6px 24px rgba(99, 102, 241, .30);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .btn-grad-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .3), transparent);
+        transform: skewX(-20deg);
+        transition: left .45s ease;
+    }
+
+    .btn-grad-hero:hover::before {
+        left: 135%;
+    }
+
+    .btn-grad-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(99, 102, 241, .38);
+        color: #fff;
+    }
+
+    .btn-outline-hero {
+        background: transparent;
+        color: var(--grad-start);
+        border: 2px solid transparent;
+        border-radius: 50rem;
+        padding: .76rem 1.8rem;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .97rem;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        transition: transform .25s, box-shadow .25s, color .25s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        box-shadow: inset 0 0 0 2px rgba(99, 102, 241, .45);
+    }
+
+    .btn-outline-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50rem;
+        padding: 2px;
+        background: var(--grad);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    .btn-outline-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, .18);
+        color: var(--grad-end);
+    }
+
+    /* Stats */
+    .hero-stats {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2.6rem;
+        animation: fadeUp .7s ease .45s both;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-num {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .78rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        letter-spacing: .03em;
+        text-transform: uppercase;
+    }
+
+    .stat-divider {
+        width: 1px;
+        background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, .3), transparent);
+        align-self: stretch;
+    }
+
+    /* ── Right Column ── */
+    .hero-visual {
+        animation: floatUp .8s ease .15s both;
+    }
+
+    .blog-card-scene {
+        position: relative;
+        padding: 1rem 1rem 1rem 2rem;
+    }
+
+    .blog-card-main {
+        background: #fff;
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-md);
+        padding: 2rem;
+        position: relative;
+        z-index: 2;
+        animation: float 5s ease-in-out infinite;
+    }
+
+    .card-author-row {
+        display: flex;
+        align-items: center;
+        gap: .65rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--grad);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+        font-size: .9rem;
+        flex-shrink: 0;
+    }
+
+    .author-name {
+        font-size: .88rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        line-height: 1.2;
+    }
+
+    .author-time {
+        font-size: .75rem;
+        color: var(--text-muted);
+    }
+
+    .card-tag {
+        display: inline-block;
+        font-size: .7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        padding: .22rem .7rem;
+        border-radius: 50rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, .12), rgba(236, 72, 153, .12));
+        color: var(--grad-start);
+        margin-bottom: .9rem;
+    }
+
+    .card-title-text {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        line-height: 1.45;
+        margin-bottom: .85rem;
+    }
+
+    .text-lines {
+        display: flex;
+        flex-direction: column;
+        gap: .45rem;
+        margin-bottom: 1.3rem;
+    }
+
+    .tl {
+        height: 8px;
+        border-radius: 50rem;
+        background: linear-gradient(90deg, #e8e4f5, #f5f3ff);
+    }
+
+    .tl-80 {
+        width: 80%;
+    }
+
+    .tl-65 {
+        width: 65%;
+    }
+
+    .tl-90 {
+        width: 90%;
+    }
+
+    .card-footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .card-action {
+        display: flex;
+        align-items: center;
+        gap: .3rem;
+        font-size: .8rem;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    .card-action.liked i {
+        color: #ec4899;
+    }
+
+    .read-more-btn {
+        font-size: .78rem;
+        font-weight: 600;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+    }
+
+    /* Mini floating cards */
+    .mini-card {
+        position: absolute;
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 4px 24px rgba(99, 102, 241, .10);
+        padding: .75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        font-size: .8rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        white-space: nowrap;
+        z-index: 3;
+    }
+
+    .mc-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: .65rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .mini-card-trending {
+        top: -18px;
+        right: 10px;
+        animation: float 4s ease-in-out 1s infinite;
+    }
+
+    .mini-card-trending .mc-icon {
+        background: linear-gradient(135deg, #fde68a, #fbbf24);
+    }
+
+    .mini-card-writers {
+        bottom: 24px;
+        left: -10px;
+        animation: float 4.5s ease-in-out .5s infinite;
+    }
+
+    .mini-card-writers .mc-icon {
+        background: linear-gradient(135deg, #a5f3fc, #6366f1);
+    }
+
+    .writers-stack {
+        display: flex;
+        margin-left: .3rem;
+    }
+
+    .writers-stack span {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        background: var(--grad);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .6rem;
+        color: #fff;
+        font-weight: 700;
+        margin-left: -7px;
+    }
+
+    .writers-stack span:first-child {
+        margin-left: 0;
+    }
+
+    /* Deco rings */
+    .deco-ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 2px dashed rgba(99, 102, 241, .18);
+    }
+
+    .deco-ring-1 {
+        width: 220px;
+        height: 220px;
+        top: -60px;
+        right: -60px;
+        animation: spin 28s linear infinite;
+    }
+
+    .deco-ring-2 {
+        width: 140px;
+        height: 140px;
+        bottom: -40px;
+        right: 30px;
+        animation: spin 20s linear infinite reverse;
+    }
+
+    /* ── Keyframes ── */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes floatUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: .5;
+            transform: scale(.7);
+        }
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 991.98px) {
+        .hero-section {
+            padding: 4.5rem 0 3.5rem;
+        }
+
+        .hero-visual {
+            margin-top: 3.5rem;
+        }
+
+        .blog-card-scene {
+            padding: 1rem;
+        }
+
+        .hero-stats {
+            gap: 1.3rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .hero-heading {
+            font-size: 2rem;
+        }
+
+        .hero-stats {
+            flex-wrap: wrap;
+            gap: .9rem;
+        }
+
+        .stat-divider {
+            display: none;
+        }
+
+        .mini-card-writers {
+            left: 0;
+        }
+    }
+</style>
+
+<section class="hero-section">
+    <div class="dot-grid"></div>
+    <div class="container position-relative">
+        <div class="row align-items-center g-5">
+
+            <!-- Left -->
+            <div class="col-lg-6">
+                <div class="hero-badge">
+                    <span class="dot-live"></span>
+                    Now live &mdash; join 50k+ writers
+                </div>
+                <h1 class="hero-heading">
+                    Share Your <span class="grad-text">Ideas</span><br>With The World
+                </h1>
+                <p class="hero-subtext">
+                    Blogify is a modern platform where writers publish blogs, share knowledge,
+                    and inspire readers — beautifully crafted for every voice.
+                </p>
+                <div class="hero-ctas d-flex flex-wrap gap-3 align-items-center">
+                    <a href="#" class="btn-grad-hero">
+                        <i class="bi bi-pencil-square"></i> Start Writing
+                    </a>
+                    <a href="{% url 'viewblog' %}" class="btn-outline-hero">
+                        Explore Blogs <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">50K+</span>
+                        <span class="stat-label">Writers</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num">200K+</span>
+                        <span class="stat-label">Articles</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num">1.2M+</span>
+                        <span class="stat-label">Readers</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right -->
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="blog-card-scene">
+                        <div class="deco-ring deco-ring-1"></div>
+                        <div class="deco-ring deco-ring-2"></div>
+
+                        <div class="mini-card mini-card-trending">
+                            <div class="mc-icon">🔥</div>
+                            <div>
+                                <div style="font-size:.72rem;color:var(--text-muted);font-weight:500">Trending now</div>
+                                <div>AI &amp; Future of Tech</div>
+                            </div>
+                        </div>
+
+                        <div class="blog-card-main">
+                            <div class="card-author-row">
+                                <div class="avatar">SJ</div>
+                                <div>
+                                    <div class="author-name">Sarah Johnson</div>
+                                    <div class="author-time">5 min read &middot; Today</div>
+                                </div>
+                            </div>
+                            <span class="card-tag">✦ Design</span>
+                            <div class="card-title-text">
+                                How Great Design Shapes<br>the Future of Storytelling
+                            </div>
+                            <div class="text-lines">
+                                <div class="tl tl-90"></div>
+                                <div class="tl tl-80"></div>
+                                <div class="tl tl-65"></div>
+                            </div>
+                            <div class="card-footer-row">
+                                <div class="card-actions">
+                                    <span class="card-action liked"><i class="bi bi-heart-fill"></i> 2.4k</span>
+                                    <span class="card-action"><i class="bi bi-chat-dots"></i> 148</span>
+                                    <span class="card-action"><i class="bi bi-bookmark"></i></span>
+                                </div>
+                                <button class="read-more-btn">Read more <i class="bi bi-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="mini-card mini-card-writers">
+                            <div class="mc-icon">✍️</div>
+                            <div>
+                                <div style="font-size:.72rem;color:var(--text-muted);font-weight:500">Active writers
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <div class="writers-stack">
+                                        <span>A</span><span>B</span><span>C</span>
+                                    </div>
+                                    <span style="font-size:.75rem;color:var(--text-muted)">+240 online</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

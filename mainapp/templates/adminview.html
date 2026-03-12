@@ -1,0 +1,178 @@
+{% extends 'adminbase.html' %}
+{% load static %}
+
+{% block title %}Admin View{% endblock %}
+
+{% block admin %}
+
+<style>
+    .page-title {
+        font-size: clamp(1.4rem, 4vw, 2rem);
+        font-weight: 700;
+        background: linear-gradient(90deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .blog-table {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        animation: fadeUp 0.6s ease;
+    }
+
+    .blog-table thead {
+        background: linear-gradient(45deg, #6366f1, #ec4899);
+        color: white;
+    }
+
+    .blog-table tbody tr {
+        transition: 0.3s;
+    }
+
+    .blog-table tbody tr:hover {
+        background: #f5f7ff;
+    }
+
+    .blog-img {
+        height: 60px;
+        width: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #eee;
+    }
+
+    .edit-btn {
+        background: #facc15;
+        border: none;
+        color: black;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .edit-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .delete-btn {
+        background: #ef4444;
+        border: none;
+        color: white;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .delete-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    /* ── Mobile card layout ── */
+    @media (max-width: 767px) {
+        .blog-table thead { display: none; }
+
+        .blog-table tbody tr {
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+        }
+
+        .blog-table tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: .5rem;
+            padding: .45rem .25rem;
+            border: none;
+            font-size: .9rem;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .blog-table tbody td:last-child {
+            border-bottom: none;
+        }
+
+        .blog-table tbody td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #6366f1;
+            min-width: 80px;
+            font-size: .8rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .blog-table tbody td[data-label="Actions"] {
+            justify-content: flex-end;
+            gap: .5rem;
+        }
+
+        .blog-table tbody td[data-label="Actions"]::before {
+            margin-right: auto;
+        }
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+
+<h2 class="page-title text-center mb-4">Admin View Blogs</h2>
+
+<div class="table-responsive">
+    <table class="table blog-table align-middle mb-0">
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Subtitle</th>
+                <th>Author</th>
+                <th>Content</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for t in alldata %}
+            <tr>
+
+                <td data-label="Title">{{ t.title }}</td>
+
+                <td data-label="Subtitle">{{ t.subtitle }}</td>
+
+                <td data-label="Author">{{ t.author }}</td>
+
+                <td data-label="Content" style="max-width:250px;">
+                    {{ t.content|truncatewords:20 }}
+                </td>
+
+                <td data-label="Image">
+                    {% if t.image %}
+                        <img src="{{ t.image.url }}" class="blog-img" alt="{{ t.title }}">
+                    {% else %}
+                        <span class="text-muted">No Image</span>
+                    {% endif %}
+                </td>
+
+                <td data-label="Actions">
+                    <a class="btn edit-btn btn-sm" href="{% url 'adminedit' id=t.id %}">Edit</a>
+                    <a class="btn delete-btn btn-sm" href="{% url 'delblog' id=t.id %}">Delete</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}View Blog{% endblock %}
+
+{% block data %}
+
+<style>
+    /* ── Card base ── */
+    .blog-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+        position: relative;
+        transition: box-shadow .4s ease;
+        animation: stackDrop .7s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    .blog-card:hover {
+        box-shadow:
+            0 30px 60px rgba(99, 102, 241, .22),
+            0 10px 20px rgba(236, 72, 153, .12);
+    }
+
+    .blog-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 15px;
+        padding: 2px;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity .4s ease;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .blog-card:hover::before {
+        opacity: 1;
+    }
+
+    .blog-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 15px;
+        background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(99, 102, 241, .10),
+                transparent 60%);
+        opacity: 0;
+        transition: opacity .35s ease;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .blog-card:hover::after {
+        opacity: 1;
+    }
+
+    /* ── Image ── */
+    .blog-img {
+        height: 200px;
+        object-fit: cover;
+        transition: transform .6s cubic-bezier(.22, 1, .36, 1), filter .4s ease;
+        filter: saturate(.85);
+        transform-origin: center bottom;
+        width: 100%;
+    }
+
+    .blog-card:hover .blog-img {
+        transform: scale(1.08) translateY(-4px);
+        filter: saturate(1.15);
+    }
+
+    /* ── Tag ── */
+    .blog-tag {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        padding: .28rem .75rem;
+        border-radius: 50rem;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        color: #fff;
+        transform: translateY(-6px);
+        opacity: 0;
+        transition: transform .35s ease .05s, opacity .35s ease .05s;
+        z-index: 2;
+    }
+
+    .blog-card:hover .blog-tag {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    /* ── Title ── */
+    .blog-title {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        font-weight: 600;
+        background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+        background-size: 200%;
+        background-position: 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        transition: background-position .5s ease;
+    }
+
+    .blog-card:hover .blog-title {
+        background-position: 0%;
+    }
+
+    .blog-author {
+        font-size: .85rem;
+        color: gray;
+    }
+
+    .blog-content {
+        font-size: .9rem;
+        color: #555;
+    }
+
+    /* ── Read button ── */
+    .read-btn {
+        background: transparent;
+        border: 2px solid transparent;
+        background-image: linear-gradient(#fff, #fff),
+            linear-gradient(135deg, #6a5acd, #ff4da6);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        color: #6a5acd;
+        padding: 7px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: .875rem;
+        position: relative;
+        overflow: hidden;
+        transition: color .35s ease, transform .25s ease, box-shadow .25s ease;
+        z-index: 2;
+    }
+
+    .read-btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #6a5acd, #ff4da6);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .35s cubic-bezier(.22, 1, .36, 1);
+        border-radius: 20px;
+        z-index: -1;
+    }
+
+    .read-btn:hover::before {
+        transform: scaleX(1);
+    }
+
+    .read-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(106, 90, 205, .38);
+    }
+
+    /* ── Page heading ── */
+    .page-heading {
+        font-size: clamp(1.4rem, 4vw, 2rem);
+        font-weight: 700;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* ── Animation ── */
+    @keyframes stackDrop {
+        0% {
+            opacity: 0;
+            transform: translateY(-24px) scale(.96) rotateX(8deg);
+        }
+
+        60% {
+            opacity: 1;
+            transform: translateY(6px) scale(1.01) rotateX(-2deg);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotateX(0deg);
+        }
+    }
+
+    .blog-card:nth-child(1) {
+        animation-delay: .08s;
+    }
+
+    .blog-card:nth-child(2) {
+        animation-delay: .18s;
+    }
+
+    .blog-card:nth-child(3) {
+        animation-delay: .28s;
+    }
+
+    .blog-card:nth-child(4) {
+        animation-delay: .38s;
+    }
+
+    .blog-card:nth-child(5) {
+        animation-delay: .48s;
+    }
+
+    .blog-card:nth-child(6) {
+        animation-delay: .58s;
+    }
+</style>
+
+
+<div class="container py-4 py-md-5">
+
+    <h3 class="page-heading text-center mb-4 mb-md-5">All Blogs</h3>
+
+    <div class="row g-4">
+
+        {% for data in alldata %}
+
+        <div class="col-12 col-sm-6 col-lg-4">
+
+            <div class="card blog-card h-100">
+
+                {% if data.image %}
+                <img src="{{ data.image.url }}" class="card-img-top blog-img" alt="{{ data.title }}">
+                {% else %}
+                <img src="{% static 'images/noimage.jpg' %}" class="card-img-top blog-img" alt="No image">
+                {% endif %}
+
+                <div class="card-body d-flex flex-column p-3 p-md-4">
+
+                    <h5 class="blog-title mb-2">{{ data.title }}</h5>
+
+                    <p class="blog-author mb-2">
+                        By {{ data.author }} &bull; {{ data.published_at }}
+                    </p>
+
+                    <p class="blog-content flex-grow-1">
+                        {{ data.content|truncatewords:25 }}
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{% url 'cardview' id=data.id %}" class="btn read-btn">Read More</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<script>
+    document.querySelectorAll('.blog-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty('--mouse-x', (e.clientX - r.left) + 'px');
+            card.style.setProperty('--mouse-y', (e.clientY - r.top) + 'px');
+
+            const cx = (e.clientX - r.left) / r.width - .5;
+            const cy = (e.clientY - r.top) / r.height - .5;
+            card.style.transform =
+                `perspective(900px) rotateY(${cx * 10}deg) rotateX(${cy * -10}deg) translateY(-8px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+</script>
+
+{% endblock %}

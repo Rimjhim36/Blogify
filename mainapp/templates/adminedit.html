@@ -1,0 +1,99 @@
+{% extends 'adminbase.html' %}
+{% load static %}
+
+{% block title %}Admin Edit{% endblock %}
+
+{% block admin %}
+
+<style>
+    .page-title {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 700;
+        background: linear-gradient(90deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .edit-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        animation: fadeUp 0.6s ease;
+    }
+
+    .edit-card input,
+    .edit-card textarea,
+    .edit-card select {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 15px;
+        transition: 0.3s;
+    }
+
+    .edit-card input:focus,
+    .edit-card textarea:focus,
+    .edit-card select:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 8px rgba(99, 102, 241, 0.25);
+        outline: none;
+    }
+
+    .update-btn {
+        background: linear-gradient(45deg, #6366f1, #ec4899);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 6px;
+        width: 100%;
+        transition: 0.3s;
+    }
+
+    .update-btn:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        color: white;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+
+<h2 class="page-title text-center mb-4">Edit Blog</h2>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-6">
+
+        <div class="edit-card p-3 p-sm-4 p-md-5">
+
+            <form action="" method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                {{ form }}
+
+                <button type="submit" class="btn update-btn mt-2">
+                    Update Blog
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

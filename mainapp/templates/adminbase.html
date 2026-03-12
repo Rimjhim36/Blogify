@@ -1,0 +1,222 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'mainapp/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            background: #f8f9ff;
+            font-family: 'DM Sans', Arial, sans-serif;
+        }
+
+        /* Header */
+        .admin-header {
+            background: linear-gradient(90deg, #6366f1, #ec4899);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            min-height: 65px;
+        }
+
+        .admin-header .navbar-brand {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .admin-header .welcome-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: .9rem;
+            font-weight: 500;
+        }
+
+        /* Toggler white */
+        .admin-header .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .admin-header .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,0.85%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-right: 1px solid #eee;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
+            min-height: 100%;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: linear-gradient(45deg, #6366f1, #ec4899);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Offcanvas sidebar */
+        .offcanvas-sidebar .offcanvas-header {
+            background: linear-gradient(90deg, #6366f1, #ec4899);
+            color: white;
+        }
+
+        .offcanvas-sidebar .btn-close {
+            filter: invert(1);
+        }
+
+        /* Logout button */
+        .logout-btn {
+            background: linear-gradient(45deg, #6366f1, #ec4899);
+            border: none;
+            color: white;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+        /* Main content */
+        .main-content {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            animation: fadeUp 0.7s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<nav class="navbar admin-header px-3">
+    <div class="d-flex align-items-center gap-3">
+
+        <!-- Hamburger — only on mobile -->
+        <button class="navbar-toggler d-lg-none" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas"
+            aria-controls="sidebarOffcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand mb-0" href="#">
+            <i class="fa-solid fa-user me-2"></i>Admin Dashboard
+        </a>
+    </div>
+
+    <span class="welcome-text d-none d-sm-block">
+        <i class="fa-solid fa-circle-user me-1"></i> Welcome, Admin
+    </span>
+</nav>
+
+
+<!-- ══════════════ OFFCANVAS SIDEBAR (mobile) ══════════════ -->
+<div class="offcanvas offcanvas-start offcanvas-sidebar" tabindex="-1"
+    id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+
+    <div class="offcanvas-header">
+        <h6 class="offcanvas-title fw-bold" id="sidebarLabel">
+            <i class="fa-solid fa-gauge me-2"></i>Menu
+        </h6>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body p-3">
+        <ul class="list-unstyled">
+            <li class="mb-2">
+                <a href="{% url 'admindash' %}">
+                    <i class="fa-solid fa-chart-line me-2"></i>Dashboard
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'addblog' %}">
+                    <i class="fa-solid fa-pen me-2"></i>Add Blog
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'adminview' %}">
+                    <i class="fa-solid fa-blog me-2"></i>View Blogs
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <a href="{% url 'logout' %}" class="btn logout-btn w-100">
+            <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+        </a>
+    </div>
+</div>
+
+
+<!-- ══════════════ MAIN LAYOUT ══════════════ -->
+<div class="container-fluid">
+    <div class="row" style="min-height: 92vh;">
+
+        <!-- SIDEBAR — desktop only -->
+        <div class="col-lg-2 d-none d-lg-flex flex-column sidebar py-4 px-3">
+            <ul class="list-unstyled flex-grow-1">
+                <li class="mb-2">
+                    <a href="{% url 'admindash' %}">
+                        <i class="fa-solid fa-chart-line me-2"></i>Dashboard
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'addblog' %}">
+                        <i class="fa-solid fa-pen me-2"></i>Add Blog
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{% url 'adminview' %}">
+                        <i class="fa-solid fa-blog me-2"></i>View Blogs
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <a href="{% url 'logout' %}" class="btn logout-btn w-100">
+                <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+            </a>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="col-12 col-lg-10 py-4 px-3 px-md-4">
+            <div class="main-content p-3 p-md-4 p-lg-5">
+                {% block admin %}{% endblock %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% load sweetify %}
+{% sweetify %}
+<script src="{% static 'mainapp/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

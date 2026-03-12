@@ -1,0 +1,107 @@
+{% extends 'adminbase.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block admin %}
+
+<style>
+    .dashboard-title {
+        font-size: clamp(1.6rem, 4vw, 2.1rem);
+        font-weight: 700;
+        background: linear-gradient(90deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        transition: 0.3s;
+        animation: fadeUp 0.6s ease;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .section-title {
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .dashboard-text {
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.7;
+    }
+
+    .dashboard-list li {
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    .divider {
+        height: 2px;
+        background: linear-gradient(90deg, #6366f1, #ec4899);
+        border: none;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="container-fluid px-3 px-md-4 py-4">
+
+    <h1 class="dashboard-title text-center mb-4">Welcome to Blogify</h1>
+
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="dashboard-card p-3 p-md-4 p-lg-5">
+                <h3 class="section-title mb-3">Blogify Platform</h3>
+                <p class="dashboard-text">
+                    Blogify is a modern blogging platform designed to share ideas, stories,
+                    and technical knowledge in a clean and structured way.
+                </p>
+                <p class="dashboard-text mb-0">
+                    Authors can create, update, and manage blog posts with images through
+                    a powerful admin dashboard, while readers enjoy a smooth and engaging
+                    reading experience.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider my-4 my-md-5">
+
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="dashboard-card p-3 p-md-4 p-lg-5">
+                <h3 class="section-title mb-3">About Blogify</h3>
+                <p class="dashboard-text">
+                    Blogify is a full-stack blog application developed using Django with
+                    complete CRUD functionality (Create, Read, Update, Delete).
+                </p>
+                <p class="dashboard-text">
+                    The platform allows authors to publish blogs with titles, subtitles,
+                    detailed content, and image uploads using a structured and secure dashboard.
+                </p>
+                <h4 class="fs-6 fw-semibold mt-4 mb-2" style="color:#374151;">Key Objectives</h4>
+                <ul class="dashboard-list ps-3 mb-0">
+                    <li>Simplify blog creation and management</li>
+                    <li>Provide a structured author dashboard</li>
+                    <li>Apply real-world web development concepts</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

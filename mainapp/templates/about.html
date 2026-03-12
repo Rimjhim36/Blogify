@@ -1,0 +1,878 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+About
+{% endblock %}
+
+
+{% block data %}
+
+
+<style>
+    .about-section {
+        padding: 7rem 0 5rem;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* ── Diagonal split background ── */
+    .about-section .split-bg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 42%;
+        height: 100%;
+        background: linear-gradient(160deg, #f5f3ff 60%, #fdf2f8 100%);
+        clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Dot pattern overlay on split */
+    .about-section .split-bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle, #c4b5fd 1px, transparent 1px);
+        background-size: 24px 24px;
+        opacity: .25;
+    }
+
+    .about-section .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ══════════════════════════
+     TOP — full width intro
+  ══════════════════════════ */
+    .about-top {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto 5rem;
+    }
+
+    .about-label {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .11em;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, rgba(99, 102, 241, .10), rgba(236, 72, 153, .10));
+        border: 1px solid rgba(99, 102, 241, .22);
+        border-radius: 50rem;
+        padding: .32rem 1rem;
+        color: #6366f1;
+        margin-bottom: 1.3rem;
+    }
+
+    .about-label .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    .about-heading {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+        font-weight: 800;
+        color: #1a1033;
+        line-height: 1.18;
+        margin-bottom: 1.2rem;
+    }
+
+    .about-heading .grad-text {
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .about-lead {
+        font-size: 1.05rem;
+        color: #64748b;
+        line-height: 1.85;
+        margin: 0 auto;
+    }
+
+    /* ══════════════════════════
+     MIDDLE — zigzag rows
+  ══════════════════════════ */
+    .zz-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        padding: 3.5rem 0;
+        border-top: 1px solid rgba(99, 102, 241, .08);
+    }
+
+    .zz-row.reverse .zz-text {
+        order: 2;
+    }
+
+    .zz-row.reverse .zz-visual {
+        order: 1;
+    }
+
+    /* Text side */
+    .zz-number {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1;
+        background: linear-gradient(135deg, rgba(99, 102, 241, .12), rgba(236, 72, 153, .12));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: -.6rem;
+        display: block;
+    }
+
+    .zz-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #1a1033;
+        line-height: 1.3;
+        margin-bottom: .9rem;
+    }
+
+    .zz-title .g {
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .zz-body {
+        font-size: .95rem;
+        color: #64748b;
+        line-height: 1.82;
+        margin-bottom: 1.4rem;
+    }
+
+    /* Tag chips */
+    .zz-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+
+    .zz-chip {
+        font-size: .75rem;
+        font-weight: 600;
+        padding: .3rem .85rem;
+        border-radius: 50rem;
+        background: #faf9ff;
+        border: 1.5px solid rgba(99, 102, 241, .15);
+        color: #6366f1;
+        transition: transform .2s, box-shadow .2s, background .2s;
+    }
+
+    .zz-chip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(99, 102, 241, .14);
+        background: linear-gradient(135deg, rgba(99, 102, 241, .08), rgba(236, 72, 153, .08));
+    }
+
+    /* ── Visual cards ── */
+
+    /* Card A — origin story */
+    .card-origin {
+        background: #fff;
+        border-radius: 1.4rem;
+        box-shadow: 0 16px 48px rgba(99, 102, 241, .13);
+        padding: 2rem;
+        position: relative;
+        transition: transform .35s ease, box-shadow .35s ease;
+        animation: floatY 5s ease-in-out infinite;
+    }
+
+    .card-origin:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 28px 60px rgba(99, 102, 241, .2);
+    }
+
+    .origin-year-badge {
+        position: absolute;
+        top: -14px;
+        right: 24px;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        color: #fff;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        padding: .3rem .9rem;
+        border-radius: 50rem;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, .35);
+    }
+
+    .origin-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 1rem;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 1.1rem;
+    }
+
+    .origin-quote {
+        font-family: 'Playfair Display', serif;
+        font-size: 1rem;
+        color: #1a1033;
+        line-height: 1.65;
+        font-style: italic;
+        margin-bottom: 1rem;
+        border-left: 3px solid transparent;
+        border-image: linear-gradient(135deg, #6366f1, #ec4899) 1;
+        padding-left: .9rem;
+    }
+
+    .origin-author {
+        font-size: .8rem;
+        font-weight: 700;
+        color: #6366f1;
+    }
+
+    /* Card B — stats mosaic */
+    .card-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .9rem;
+        animation: floatY 4.5s ease-in-out .5s infinite;
+    }
+
+    .stat-tile {
+        background: #fff;
+        border-radius: 1.1rem;
+        box-shadow: 0 6px 22px rgba(99, 102, 241, .10);
+        padding: 1.3rem 1.2rem;
+        border: 1.5px solid rgba(99, 102, 241, .08);
+        transition: transform .3s ease, box-shadow .3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-tile::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .35s ease;
+    }
+
+    .stat-tile:hover::before {
+        transform: scaleX(1);
+    }
+
+    .stat-tile:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 14px 32px rgba(99, 102, 241, .16);
+    }
+
+    .stat-tile.wide {
+        grid-column: span 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .st-emoji {
+        font-size: 1.6rem;
+        margin-bottom: .4rem;
+        display: block;
+    }
+
+    .st-num {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.7rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .st-label {
+        font-size: .75rem;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    .wide-divider {
+        width: 1px;
+        height: 40px;
+        background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, .2), transparent);
+    }
+
+    /* Card C — team wall */
+    .card-team {
+        background: #fff;
+        border-radius: 1.4rem;
+        box-shadow: 0 16px 48px rgba(99, 102, 241, .13);
+        padding: 2rem;
+        animation: floatY 5.2s ease-in-out .8s infinite;
+        transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+    .card-team:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 28px 60px rgba(99, 102, 241, .2);
+    }
+
+    .team-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.3rem;
+    }
+
+    .team-header-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1a1033;
+    }
+
+    .team-header-sub {
+        font-size: .75rem;
+        color: #64748b;
+    }
+
+    .hiring-badge {
+        font-size: .7rem;
+        font-weight: 700;
+        padding: .25rem .7rem;
+        border-radius: 50rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, .1), rgba(236, 72, 153, .1));
+        color: #6366f1;
+        border: 1px solid rgba(99, 102, 241, .2);
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: .7rem;
+    }
+
+    .tm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .35rem;
+        cursor: default;
+    }
+
+    .tm-av {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+        font-size: .85rem;
+        border: 2.5px solid #fff;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, .2);
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .tm:hover .tm-av {
+        transform: translateY(-4px) scale(1.08);
+        box-shadow: 0 10px 22px rgba(99, 102, 241, .28);
+    }
+
+    .tm-name {
+        font-size: .68rem;
+        font-weight: 600;
+        color: #374151;
+        text-align: center;
+    }
+
+    .tm-role {
+        font-size: .62rem;
+        color: #94a3b8;
+        text-align: center;
+    }
+
+    /* ══════════════════════════
+     BOTTOM — full width CTA strip
+  ══════════════════════════ */
+    .about-cta-strip {
+        margin-top: 4rem;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        border-radius: 1.8rem;
+        padding: 3rem 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .about-cta-strip::before {
+        content: '';
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .08);
+        top: -100px;
+        right: -80px;
+    }
+
+    .about-cta-strip::after {
+        content: '';
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .06);
+        bottom: -60px;
+        left: 120px;
+    }
+
+    .strip-text {
+        position: relative;
+        z-index: 1;
+    }
+
+    .strip-text h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: .35rem;
+    }
+
+    .strip-text p {
+        font-size: .92rem;
+        color: rgba(255, 255, 255, .78);
+        margin: 0;
+    }
+
+    .strip-btns {
+        display: flex;
+        gap: .85rem;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-strip-white {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        background: #fff;
+        color: #6366f1;
+        border: none;
+        border-radius: 50rem;
+        padding: .75rem 1.7rem;
+        font-size: .92rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform .25s, box-shadow .25s;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, .15);
+    }
+
+    .btn-strip-white:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+        color: #6366f1;
+    }
+
+    .btn-strip-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        background: transparent;
+        color: #fff;
+        border: 2px solid rgba(255, 255, 255, .55);
+        border-radius: 50rem;
+        padding: .73rem 1.65rem;
+        font-size: .92rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform .25s, background .25s, border-color .25s;
+    }
+
+    .btn-strip-outline:hover {
+        background: rgba(255, 255, 255, .12);
+        border-color: #fff;
+        color: #fff;
+        transform: translateY(-3px);
+    }
+
+    /* ── Scroll reveal ── */
+    .abt-reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .abt-reveal-l {
+        opacity: 0;
+        transform: translateX(-30px);
+        transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .abt-reveal-r {
+        opacity: 0;
+        transform: translateX(30px);
+        transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .abt-reveal.in,
+    .abt-reveal-l.in,
+    .abt-reveal-r.in {
+        opacity: 1;
+        transform: none;
+    }
+
+    .d1 {
+        transition-delay: .08s
+    }
+
+    .d2 {
+        transition-delay: .18s
+    }
+
+    .d3 {
+        transition-delay: .28s
+    }
+
+    .d4 {
+        transition-delay: .38s
+    }
+
+    .d5 {
+        transition-delay: .48s
+    }
+
+    .d6 {
+        transition-delay: .58s
+    }
+
+    /* ── Keyframes ── */
+    @keyframes floatY {
+
+        0%,
+        100% {
+            transform: translateY(0)
+        }
+
+        50% {
+            transform: translateY(-10px)
+        }
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        50% {
+            opacity: .4;
+            transform: scale(.6)
+        }
+    }
+
+    /* ── Responsive ── */
+    @media(max-width:991.98px) {
+        .about-section {
+            padding: 4.5rem 0 3rem;
+        }
+
+        .split-bg {
+            display: none;
+        }
+
+        .zz-row {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 2.5rem 0;
+        }
+
+        .zz-row.reverse .zz-text,
+        .zz-row.reverse .zz-visual {
+            order: unset;
+        }
+
+        .about-cta-strip {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .strip-btns {
+            justify-content: center;
+        }
+    }
+
+    @media(max-width:575.98px) {
+        .team-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .about-cta-strip::before,
+        .about-cta-strip::after {
+            display: none;
+        }
+    }
+</style>
+
+
+<!-- ══════════════ ABOUT SECTION ══════════════ -->
+<section class="about-section">
+    <div class="split-bg"></div>
+
+    <div class="container">
+
+        <!-- ── TOP intro ── -->
+        <div class="about-top">
+            <div class="about-label abt-reveal d1"><span class="dot"></span> Who We Are</div>
+            <h2 class="about-heading abt-reveal d2">
+                Built by Writers,<br><span class="grad-text">For the World to Read</span>
+            </h2>
+            <p class="about-lead abt-reveal d3">
+                Blogify isn't just a platform — it's a philosophy. We believe every idea deserves
+                a stage, every writer deserves an audience, and every reader deserves content
+                that genuinely moves them.
+            </p>
+        </div>
+
+        <!-- ════ ZIG ROW 1 — Our Origin ════ -->
+        <div class="zz-row">
+            <div class="zz-text abt-reveal-l d2">
+                <span class="zz-number">01</span>
+                <h3 class="zz-title">Where It All <span class="g">Began</span></h3>
+                <p class="zz-body">
+                    Two college friends. One broken laptop. Zero funding. In 2022, frustrated with
+                    blogging platforms that prioritised ads over authors, we built Blogify in a
+                    Lucknow hostel room. We wanted a place that felt like a library — calm, focused,
+                    and built entirely around the written word.
+                </p>
+                <p class="zz-body" style="margin-top:-.5rem;">
+                    Three years later, we're home to 50,000+ writers across India and beyond —
+                    and that hostel room is now a real office. The mission hasn't changed one bit.
+                </p>
+                <div class="zz-chips">
+                    <span class="zz-chip">🏠 Founded in Lucknow</span>
+                    <span class="zz-chip">📅 Est. 2022</span>
+                    <span class="zz-chip">🚀 Bootstrapped</span>
+                    <span class="zz-chip">🇮🇳 Made in India</span>
+                </div>
+            </div>
+
+            <div class="zz-visual abt-reveal-r d3">
+                <div class="card-origin">
+                    <div class="origin-year-badge">Since 2022</div>
+                    <div class="origin-icon"><i class="bi bi-lightbulb-fill"></i></div>
+                    <div class="origin-quote">
+                        "We were tired of writing for algorithms. So we built a platform where
+                        humans write for humans."
+                    </div>
+                    <div class="origin-author">— Aryan & Sahil, Co-founders of Blogify</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════ ZIG ROW 2 — Impact ════ -->
+        <div class="zz-row reverse">
+            <div class="zz-visual abt-reveal-l d2">
+                <div class="card-stats">
+                    <div class="stat-tile">
+                        <span class="st-emoji">✍️</span>
+                        <div class="st-num">50K+</div>
+                        <div class="st-label">Active Writers</div>
+                    </div>
+                    <div class="stat-tile">
+                        <span class="st-emoji">📖</span>
+                        <div class="st-num">1.2M</div>
+                        <div class="st-label">Monthly Readers</div>
+                    </div>
+                    <div class="stat-tile">
+                        <span class="st-emoji">📝</span>
+                        <div class="st-num">200K</div>
+                        <div class="st-label">Published Blogs</div>
+                    </div>
+                    <div class="stat-tile">
+                        <span class="st-emoji">🌍</span>
+                        <div class="st-num">40+</div>
+                        <div class="st-label">Countries</div>
+                    </div>
+                    <div class="stat-tile wide">
+                        <div style="text-align:center;">
+                            <div class="st-num">4.9★</div>
+                            <div class="st-label">Writer Rating</div>
+                        </div>
+                        <div class="wide-divider"></div>
+                        <div style="text-align:center;">
+                            <div class="st-num">98%</div>
+                            <div class="st-label">Satisfaction</div>
+                        </div>
+                        <div class="wide-divider"></div>
+                        <div style="text-align:center;">
+                            <div class="st-num">0</div>
+                            <div class="st-label">Ads Shown</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="zz-text abt-reveal-r d3">
+                <span class="zz-number">02</span>
+                <h3 class="zz-title">The <span class="g">Impact</span> We've Made</h3>
+                <p class="zz-body">
+                    Numbers don't tell the whole story — but they hint at it. In three years we've
+                    watched students become columnists, engineers become novelists, and shy
+                    first-timers become communities of thousands.
+                </p>
+                <p class="zz-body" style="margin-top:-.5rem;">
+                    And one thing we're quietly proud of? Zero ads. Ever. Your reader's attention
+                    belongs to your words — not a banner for a mattress brand.
+                </p>
+                <div class="zz-chips">
+                    <span class="zz-chip">📈 3× growth YoY</span>
+                    <span class="zz-chip">🚫 Ad-free forever</span>
+                    <span class="zz-chip">💸 Free to publish</span>
+                    <span class="zz-chip">🔒 Your data, yours</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════ ZIG ROW 3 — Team ════ -->
+        <div class="zz-row">
+            <div class="zz-text abt-reveal-l d2">
+                <span class="zz-number">03</span>
+                <h3 class="zz-title">The <span class="g">People</span> Behind It</h3>
+                <p class="zz-body">
+                    We're a small, fiercely passionate team of designers, engineers, and writers
+                    who use Blogify ourselves every single day. That's not a marketing line — our
+                    entire company blog runs on the same platform you use.
+                </p>
+                <p class="zz-body" style="margin-top:-.5rem;">
+                    Every product decision starts with one question: <em>"Does this make writing
+                        or reading better?"</em> If the answer is no, it doesn't ship.
+                </p>
+                <div class="zz-chips">
+                    <span class="zz-chip">👥 50 team members</span>
+                    <span class="zz-chip">🏙️ Lucknow HQ</span>
+                    <span class="zz-chip">🌐 Remote-friendly</span>
+                    <span class="zz-chip">💼 We're hiring</span>
+                </div>
+            </div>
+
+            <div class="zz-visual abt-reveal-r d3">
+                <div class="card-team">
+                    <div class="team-header">
+                        <div>
+                            <div class="team-header-title">Meet the Team</div>
+                            <div class="team-header-sub">50 people, 1 mission</div>
+                        </div>
+                        <span class="hiring-badge">We're Hiring ✨</span>
+                    </div>
+                    <div class="team-grid">
+                        <div class="tm">
+                            <div class="tm-av">AR</div>
+                            <div class="tm-name">Aryan R.</div>
+                            <div class="tm-role">Co-founder</div>
+                        </div>
+                        <div class="tm">
+                            <div class="tm-av">SK</div>
+                            <div class="tm-name">Sahil K.</div>
+                            <div class="tm-role">Co-founder</div>
+                        </div>
+                        <div class="tm">
+                            <div class="tm-av">PR</div>
+                            <div class="tm-name">Priya R.</div>
+                            <div class="tm-role">Design</div>
+                        </div>
+                        <div class="tm">
+                            <div class="tm-av">MJ</div>
+                            <div class="tm-name">Mohit J.</div>
+                            <div class="tm-role">Backend</div>
+                        </div>
+                        <div class="tm">
+                            <div class="tm-av">AS</div>
+                            <div class="tm-name">Ananya S.</div>
+                            <div class="tm-role">Content</div>
+                        </div>
+                        <div class="tm">
+                            <div class="tm-av">RV</div>
+                            <div class="tm-name">Rahul V.</div>
+                            <div class="tm-role">Frontend</div>
+                        </div>
+                        <div class="tm">
+                            <div class="tm-av">KT</div>
+                            <div class="tm-name">Kavya T.</div>
+                            <div class="tm-role">Growth</div>
+                        </div>
+                        <div class="tm">
+                            <div class="tm-av"
+                                style="background:linear-gradient(135deg,#e0e7ff,#fce7f3);color:#6366f1;font-size:.7rem;">
+                                +43</div>
+                            <div class="tm-name">More</div>
+                            <div class="tm-role">& counting</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── BOTTOM CTA strip ── -->
+        <div class="about-cta-strip abt-reveal d4">
+            <div class="strip-text">
+                <h3>Your story belongs here.</h3>
+                <p>Join 50,000+ writers who already call Blogify home.</p>
+            </div>
+            <div class="strip-btns">
+                <a href="#" class="btn-strip-white"><i class="bi bi-pencil-square"></i> Start Writing Free</a>
+                <a href="#" class="btn-strip-outline"><i class="bi bi-people"></i> Meet the Community</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<script>
+    const allReveal = document.querySelectorAll('.abt-reveal,.abt-reveal-l,.abt-reveal-r');
+    const abtObs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    allReveal.forEach(el => abtObs.observe(el));
+</script>
+
+
+
+
+{% endblock %}

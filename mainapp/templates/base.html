@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'mainapp/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'mainapp/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .brand-gradient {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .blogify-nav {
+            box-shadow: 0 1px 16px rgba(99, 102, 241, .10);
+        }
+
+        .blogify-nav .nav-link {
+            font-weight: 500;
+            font-size: .93rem;
+            color: #1a1033 !important;
+            position: relative;
+            padding: .4rem .65rem !important;
+            transition: color .25s;
+        }
+
+        .blogify-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            border-radius: 50rem;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            transition: width .3s ease, left .3s ease;
+        }
+
+        .blogify-nav .nav-link:hover::after { width: 80%; left: 10%; }
+        .blogify-nav .nav-link:hover {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-blogify {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #fff !important;
+            border: none;
+            border-radius: 50rem;
+            padding: .48rem 1.35rem;
+            font-size: .88rem;
+            font-weight: 600;
+            overflow: hidden;
+            position: relative;
+            transition: transform .25s, box-shadow .25s;
+            box-shadow: 0 4px 18px rgba(99, 102, 241, .30);
+            white-space: nowrap;
+        }
+
+        .btn-blogify::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -75%;
+            width: 50%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+            transform: skewX(-20deg);
+            transition: left .45s ease;
+        }
+
+        .btn-blogify:hover::before { left: 135%; }
+        .btn-blogify:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(99, 102, 241, .40); }
+        .btn-blogify:active { transform: scale(.97); }
+
+        .blog-footer {
+            background: #ffffff;
+            border-top: 2px solid #f1f1f1;
+            margin-top: 60px;
+        }
+
+        .footer-social {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            padding: 1rem 1.5rem;
+        }
+
+        .footer-social a {
+            color: white;
+            font-size: 1.15rem;
+            margin-right: 18px;
+            transition: transform .25s ease, opacity .25s ease;
+            display: inline-block;
+        }
+
+        .footer-social a:hover { transform: translateY(-4px) scale(1.25); opacity: .88; }
+
+        .footer-heading {
+            font-weight: 700;
+            font-size: .88rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #374151;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 28px; height: 2px;
+            border-radius: 50rem;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            transition: width .35s ease;
+        }
+
+        .footer-heading:hover::after { width: 100%; }
+
+        .footer-links a {
+            display: block;
+            color: #64748b;
+            text-decoration: none;
+            margin-bottom: 9px;
+            font-size: .9rem;
+            font-weight: 500;
+            position: relative;
+            padding-left: 0;
+            transition: color .25s ease, padding-left .25s ease;
+        }
+
+        .footer-links a::before {
+            content: '→';
+            position: absolute;
+            left: -16px; opacity: 0;
+            transition: opacity .25s ease, left .25s ease;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-links a:hover { color: #6366f1; padding-left: 18px; }
+        .footer-links a:hover::before { opacity: 1; left: 0; }
+
+        .footer-contact p {
+            font-size: .9rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            transition: color .25s;
+        }
+
+        .footer-contact p:hover { color: #6366f1; }
+
+        .footer-contact i {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-right: 8px;
+        }
+
+        .footer-copy {
+            background: #f8f7ff;
+            font-size: .83rem;
+            color: #64748b;
+            padding: .9rem 1rem;
+            border-top: 1px solid #ede9fe;
+        }
+
+        .footer-copy strong {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg sticky-top bg-white blogify-nav">
+        <div class="container">
+
+            <a class="navbar-brand brand-gradient text-decoration-none fs-4" href="#">Blogify</a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button"
+                data-bs-toggle="collapse" data-bs-target="#blogifyNav"
+                aria-controls="blogifyNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="blogifyNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-1 gap-lg-2 mt-3 mt-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Explore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'viewblog' %}">View Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a href="{% url 'login' %}" class="btn btn-blogify">Login</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- PAGE CONTENT -->
+    <div class="container-fluid px-0">
+        {% block data %}{% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="blog-footer">
+
+        <!-- Social Bar -->
+        <div class="footer-social d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span class="d-none d-md-block" style="font-size:.93rem; font-weight:500; letter-spacing:.02em;">
+                Connect with us on social media:
+            </span>
+            <div>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+
+        <!-- Footer Body -->
+        <div class="container py-5">
+            <div class="row g-4 text-center text-md-start">
+
+                <!-- Brand -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <a href="#" class="brand-gradient text-decoration-none fs-5 d-inline-block mb-2">Blogify</a>
+                    <p class="text-secondary" style="font-size:.9rem; line-height:1.7;">
+                        Blogify is a modern blogging platform where users can create,
+                        manage, and share blogs with images and structured content.
+                    </p>
+                </div>
+
+                <!-- Technologies -->
+                <div class="col-6 col-md-3 col-lg-2 offset-lg-1">
+                    <h6 class="footer-heading mb-3">Technologies</h6>
+                    <div class="footer-links">
+                        <a href="#">Django</a>
+                        <a href="#">Python</a>
+                        <a href="#">Bootstrap</a>
+                        <a href="#">JavaScript</a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h6 class="footer-heading mb-3">Quick Links</h6>
+                    <div class="footer-links">
+                        <a href="#">Home</a>
+                        <a href="#">About</a>
+                        <a href="#">Blogs</a>
+                        <a href="#">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-12 col-md-6 col-lg-3 footer-contact">
+                    <h6 class="footer-heading mb-3">Contact</h6>
+                    <p><i class="fas fa-map-marker-alt"></i> Lucknow, India</p>
+                    <p><i class="fas fa-envelope"></i> blogify@email.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-center footer-copy">
+            © 2026 Copyright : <strong>Blogify</strong> | Built with Django
+        </div>
+
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% load sweetify %}
+    {% sweetify %}
+
+    <script src="{% static 'mainapp/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

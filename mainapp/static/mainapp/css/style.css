@@ -1,0 +1,7 @@
+.formdiv {
+    width: 30vw;
+    margin: 0px auto;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px gray;
+    background-color: rgb(184, 204, 213); 
+}
