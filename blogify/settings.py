@@ -17,9 +17,13 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# static files ke lie setting kiya 
-import os
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-#a0j&0-_@n9j%^-^(z8a_lmm4!71y#k#81h=&=os@n5#6+gdvv'
+
+import os
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
@@ -28,16 +32,14 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#a0j&0-_@n9j%^-^(z8a_lmm4!71y#k#81h=&=os@n5#6+gdvv'
+DJANGO_SUPERUSER_USERNAME = os.environ.get("DJANGO_SUPERUSER_USERNAME")
+DJANGO_SUPERUSER_EMAIL = os.environ.get("DJANGO_SUPERUSER_EMAIL")
+DJANGO_SUPERUSER_PASSWORD = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["blogify-okgk.onrender.com"]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'blogify-okgk.onrender.com']
 
 # Application definition
 
@@ -68,7 +70,6 @@ MIDDLEWARE += [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'blogify.urls' 
 
